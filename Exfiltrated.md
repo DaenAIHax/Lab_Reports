@@ -102,7 +102,7 @@ The shell was stabilized using the following command:
 python3 -c 'import pty;pty.spawn("/bin/bash")'
 ```
 
-## Privileged Escalation
+## Privilege Escalation
 
 
 During local enumeration, a cron job running as root was identified:
