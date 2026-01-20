@@ -10,9 +10,6 @@ Vulnerability Explanation:
 The Salt API service exposed on TCP port 8000 is vulnerable to an authentication bypass vulnerability (CVE-2020-11651).
 This vulnerability allows an unauthenticated attacker to execute arbitrary commands on the Salt master
 
-Severity:
-Critical
-
 
 ## Information	Gathering:
 
