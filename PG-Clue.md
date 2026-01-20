@@ -68,7 +68,7 @@ Enumeration of port 80 using a browser:
 
 <img width="707" height="269" alt="Pasted image 20260120175313" src="https://github.com/user-attachments/assets/750f533b-8fe5-4625-8cb5-7bbf59fa3d77" />
 
-Enumeration of port3000 using a browser:
+Enumeration of port 3000 using a browser:
 <img width="1283" height="736" alt="Pasted image 20260120175358" src="https://github.com/user-attachments/assets/183fdb20-b6a8-4814-abea-af4f4e5f3c9b" />
 
 
