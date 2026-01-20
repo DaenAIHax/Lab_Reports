@@ -76,7 +76,6 @@ System Vulnerable: 192.168.132.163
 
 Vulnerability Explanation: /panel/uploads in Subrion CMS 4.2.1 allows remote attackers to execute arbitrary PHP code via a .pht or .phar file, because the .htaccess file omits these.
 
-Severity: Critical
 
 ### Confirming Arbitrary File Upload:
 
@@ -128,7 +127,6 @@ System Vulnerable: 192.168.132.163
 
 Vulnerability Explanation:  improper neutralization of user data in the DjVu file format in ExifTool versions 7.44 and up allows arbitrary code execution when parsing the malicious image
 
-Severity: Critical
 
 <img width="1064" height="364" alt="Pasted image 20260119141150" src="https://github.com/user-attachments/assets/3dd84ffb-5a30-4606-a72f-3ef8b59b9503" />
 
