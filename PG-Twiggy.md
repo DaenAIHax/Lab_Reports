@@ -1,15 +1,12 @@
 # Report-Twiggy
 
-Vulnerability Exploited:
-SaltStack Salt API – Authentication Bypass & Remote Code Execution (CVE-2020-11651)
+Laboratory: Offensive Security Proving Grounds
 
-System Vulnerable:
-192.168.132.62
+Target Name: Twiggy
 
-Vulnerability Explanation:
-The Salt API service exposed on TCP port 8000 is vulnerable to an authentication bypass vulnerability (CVE-2020-11651).
-This vulnerability allows an unauthenticated attacker to execute arbitrary commands on the Salt master
+Target IP Address: 192.168.132.62
 
+Operating System: Linux
 
 ## Information	Gathering:
 
@@ -48,18 +45,32 @@ Enumeration of port 80 using a browser:
 <img width="956" height="474" alt="Pasted image 20260118000109" src="https://github.com/user-attachments/assets/ca6fce61-4bb2-47cb-8ab8-b5a2214e3fda" />
 
 
+
+
 Further enumeration of port 8000 using a browser:
+
+<img width="598" height="570" alt="Pasted image 20260117233555" src="https://github.com/user-attachments/assets/1120d873-2e22-4c09-b26a-2d0ceedde2ec" />
+
 ```text
 X-Upstream: salt-api/3000-1
 ```
-<img width="598" height="570" alt="Pasted image 20260117233555" src="https://github.com/user-attachments/assets/1120d873-2e22-4c09-b26a-2d0ceedde2ec" />
 
 Searching Exploit-DB for PoC on salt-api's vulnerability:
 <img width="1208" height="395" alt="Pasted image 20260119114344" src="https://github.com/user-attachments/assets/ae898666-5740-469a-852d-8c514e608295" />
 
 Proof of concept Code:https://github.com/jasperla/CVE-2020-11651-poc
 
+## Initial Access
+
+Vulnerability Exploited:
+SaltStack Salt API – Authentication Bypass & Remote Code Execution (CVE-2020-11651)
+
+Vulnerability Explanation:
+The Salt API service exposed on TCP port 8000 is vulnerable to an authentication bypass vulnerability (CVE-2020-11651).
+This vulnerability allows an unauthenticated attacker to execute arbitrary commands on the Salt master
 ### Confirming RCE:
+
+### Exploitation:
 
 Env:
 ```
