@@ -94,6 +94,7 @@ find / -perm -u=s -type f 2>/dev/null
 ```
 
 The `/usr/bin/php7.4` binary is misconfigured and can be used to obtain elevated privileges.
+
 <img width="252" height="93" alt="Pasted image 20260120111044" src="https://github.com/user-attachments/assets/5ecb1bb1-d0c7-418f-b34f-48fd72952f60" />
 
 
