@@ -139,6 +139,7 @@ The exploit required authentication to the FreeSWITCH event socket.
 Credentials previously extracted from the /etc/freeswitch/autoload_config/event_socket.conf.xml file were used to successfully authenticate.
 
 <img width="635" height="532" alt="Pasted image 20260120182747" src="https://github.com/user-attachments/assets/9d7dc9ee-437c-4aab-91c7-10d2eca0899e" />
+
 After successful authentication, arbitrary commands were executed to confirm code execution, 
 followed by the execution of a reverse shell payload.
 
